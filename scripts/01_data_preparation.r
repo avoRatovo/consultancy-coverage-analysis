@@ -96,4 +96,20 @@ pop_data <- pop_data %>%
   filter(Type == "Country/Area", Year %in% 2018:2022)
 
 
+# c) Clean status data
+
+# Remove rows with missing ISO3Code
+status_data <- status_data[!is.na(status_data$ISO3Code), ]
+
+# Normalize Status.U5MR to lowercase and recode as a binary indicator 'On_track_status'
+status_data <- status_data %>%
+  mutate(
+    Status.U5MR = tolower(Status.U5MR),
+    On_track_status = case_when(
+      Status.U5MR %in% c("achieved", "on track") ~ "On-track",
+      Status.U5MR == "acceleration needed" ~ "Off-track",
+      TRUE ~ NA_character_
+    )
+  )
+
 

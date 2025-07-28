@@ -22,3 +22,26 @@ weighted_data <- merged %>%
     On_track_status              # To disaggregate results by status group
   )
 
+
+# Step 2 – Get projected births for 2022 from the projections sheet
+# Note: Although the instructions mention using 2022 projections, the original merged dataset used projections from the corresponding year of the indicator.
+# Here we correct that by explicitly extracting 2022 projections for all countries.
+pop_2022_proj <- pop_data_proj %>%
+  filter(Year == 2022, Type == "Country/Area") %>%
+  select(`ISO3 Alpha-code`, `Births (thousands)_proj`)  # More reliable population weight
+
+# Step 3 – Merge 2022 projected births with the simplified indicators dataset
+weighted_data <- weighted_data %>%
+  left_join(pop_2022_proj, by = "ISO3 Alpha-code") %>%
+  rename(weight_2022 = `Births (thousands)_proj.y`)  # Rename to clarify it's the 2022 projection
+
+# Optional: Remove the original 'Births' column from the indicator year as no longer needed
+weighted_data <- weighted_data %>%
+  select(-`Births (thousands)_proj.x`)
+
+# Convert relevant columns to numeric for calculations
+weighted_data <- weighted_data %>%
+  mutate(
+    weight_2022 = as.numeric(weight_2022),
+    OBS_VALUE = as.numeric(OBS_VALUE)
+  )

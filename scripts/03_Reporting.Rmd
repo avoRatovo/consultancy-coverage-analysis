@@ -1,5 +1,5 @@
 ---
-title: "Population-Weighted Coverage Report for ANC4 and SBA (2018–2022)"
+title: "Population-Weighted Coverage Report for ANC4 and SBA (As of 2022)"
 output: html_document
 date: "`r Sys.Date()`"
 ---
@@ -14,7 +14,16 @@ library(knitr)
 coverage_weighted_final <- read.csv("../data/03_output_data/coverage_weighted_final.csv")
 ```
 
-## Coverage Visualization
+## Positions applied for
+
+This repository was submitted as part of the technical assessment for the following consultancy positions at UNICEF:
+
+1.  Learning and Skills Data Analyst Consultant (Req: #581598)
+2.  Household Survey Data Analyst Consultant (Req: #581656)
+3.  Administrative Data Analyst (Req: #581696)
+4.  Microdata Harmonization Consultant (Req: #581699)
+
+## Coverage visualization
 
 ```{r coverage-plot, echo=FALSE}
 

@@ -78,7 +78,23 @@ To ensure full reproducibility, the entire analysis can be executed from a singl
 
 -   Operating system compatible with UTF-8 encoding (Windows, macOS, or Linux)
 
-Note: No manual installation of R packages is required. All dependencies will be automatically handled by the project.
+## R Packages Used
+
+The following R packages are required to run this project:
+
+-   readxl – for reading Excel files
+
+-   dplyr – for data wrangling and manipulation
+
+-   ggplot2 – for visualization
+
+-   rmarkdown – for generating the final report
+
+-   knitr – for rendering the report with dynamic content
+
+-   scales – for formatting numeric labels in plots
+
+All of these packages will be automatically installed if not already available on your machine, using the script user_profile.R. No manual installation is necessary.
 
 ## Steps to Run the Analysis
 

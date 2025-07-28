@@ -143,3 +143,9 @@ merged <- merged %>%
   filter(Year == max(Year, na.rm = TRUE)) %>%
   ungroup()
 
+# Save cleaned merged data to CSV
+write.csv(
+  merged,
+  file = "data/02_cleaned_data/merged_latest_by_country_indicator.csv",
+  row.names = FALSE
+)

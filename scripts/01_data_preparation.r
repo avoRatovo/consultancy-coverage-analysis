@@ -142,3 +142,4 @@ merged <- merged %>%
   group_by(Country, Indicator) %>%
   filter(Year == max(Year, na.rm = TRUE)) %>%
   ungroup()
+

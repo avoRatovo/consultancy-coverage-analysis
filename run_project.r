@@ -1,10 +1,5 @@
-# Load required libraries
-library(readxl)
-library(dplyr)
-library(rmarkdown)
-library(knitr)
-library(scales)
-library(ggplot2)
+# Load environment and dependencies
+source("user_profile.R")
 
 # Execute data preparation script
 source("scripts/01_data_preparation.R")

@@ -45,3 +45,35 @@ weighted_data <- weighted_data %>%
     weight_2022 = as.numeric(weight_2022),
     OBS_VALUE = as.numeric(OBS_VALUE)
   )
+
+
+# Step 4 – Filter the dataset to include only valid rows:
+# - Non-missing coverage value (OBS_VALUE)
+# - Non-missing projected births for 2022 (weight_2022)
+# - Non-missing group classification (On_track_status)
+# Each row in this dataset represents a country-indicator-year observation.
+# Only countries with all three fields filled are included in the weighted average.
+
+weighted_data <- weighted_data %>%
+  filter(!is.na(OBS_VALUE), !is.na(weight_2022), !is.na(On_track_status))
+
+# Step 5 – Calculate population-weighted coverage
+# Weighted average coverage is computed as:
+# sum of (country coverage × projected births in 2022) divided by total projected births
+# This approach ensures that countries contribute proportionally to their estimated number of births
+
+weighted_data <- weighted_data %>%
+  group_by(On_track_status, Indicator) %>%
+  summarise(
+    weighted_coverage = sum(OBS_VALUE * weight_2022, na.rm = TRUE) /
+      sum(weight_2022, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Step 6 – Save final result
+
+# Create output folder if it doesn't exist
+if (!dir.exists("data/03_output_data")) dir.create("data/03_output_data", recursive = TRUE)
+
+# Write weighted_data to CSV
+write.csv(weighted_data, "data/03_output_data/coverage_weighted_final.csv", row.names = FALSE)

@@ -58,3 +58,7 @@ ggplot(coverage_weighted_final, aes(x = Indicator, y = weighted_coverage / 100, 
 
 
 ```
+
+## Interpretation
+
+This report presents population-weighted coverage for two key maternal and newborn health indicators: ANC4, which measures the percentage of women aged 15–49 who attended at least four antenatal care visits during pregnancy, and SBA, which represents the percentage of deliveries attended by skilled health personnel. On-track countries show higher average coverage for both indicators compared to off-track countries, with a notably significant difference, suggesting consistency between program classification and actual service coverage. The analysis used projected births in 2022 as weights and included only countries with complete data on coverage, classification, and projected births.

@@ -11,3 +11,12 @@ pop_data_est <- read_excel("data/01_rawdata/WPP2022_GEN_F01_DEMOGRAPHIC_INDICATO
 
 # Import Projections sheet
 pop_data_proj <- read_excel("data/01_rawdata/WPP2022_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT_REV1.xlsx", sheet = "Projections")
+
+
+# 2. Data cleaning
+
+# a) Clean indicators data
+# Remove rows with missing geographic area
+# (Note: When importing Excel files, extra NA rows are sometimes added at the end.
+# In this case, after reviewing the dataset, there is one NA row at the end that needs to be removed.)
+indicators <- indicators[!is.na(indicators$`Geographic area`), ]

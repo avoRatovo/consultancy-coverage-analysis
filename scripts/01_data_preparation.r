@@ -42,7 +42,7 @@ non_country_entities <- c(
 )
 
 indicators <- indicators %>%
-  filter(!`Geographic area` %in% non_country_entities & !is.na(`Geographic area`))
+  filter(!`Geographic area` %in% non_country_entities)
 
 # b) Clean population data
 # The population Excel files include metadata rows at the top (rows 1 to 12),
@@ -106,6 +106,8 @@ pop_data <- pop_data %>%
 # c) Clean status data
 
 # Remove rows with missing ISO3Code
+# Although the current dataset does not contain any missing ISO3 codes,
+# this precautionary step ensures robustness in case future updates introduce missing values.
 status_data <- status_data[!is.na(status_data$ISO3Code), ]
 
 # Normalize Status.U5MR to lowercase and recode as a binary indicator 'On_track_status'

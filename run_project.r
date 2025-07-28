@@ -2,6 +2,9 @@
 library(readxl)
 library(dplyr)
 library(rmarkdown)
+library(knitr)
+library(scales)
+library(ggplot2)
 
 # Execute data preparation script
 source("scripts/01_data_preparation.R")

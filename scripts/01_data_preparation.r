@@ -1,14 +1,14 @@
-# 2. Data cleaning
+# Step 1, Data cleaning
 
 # a) Clean indicators data
 # Remove rows with missing geographic area
-# (Note: When importing Excel files, extra NA rows are sometimes added at the end.
+# (When importing Excel files, extra NA rows are sometimes added at the end.
 # In this case, after reviewing the dataset, there is one NA row at the end that needs to be removed.)
 indicators <- indicators[!is.na(indicators$`Geographic area`), ]
 
 
-# Remove regional and non-country entities
-# Vector of non-country entities
+# Remove regional and non country entities
+# Vector of non country entities
 non_country_entities <- c(
   "(SDGRC) Central Africa", "(SDGRC) Eastern Africa", "(SDGRC) North Africa", "(SDGRC) Southern Africa",
   "(SDGRC) United Nations Economic Commission for Africa", "(SDGRC) West Africa", "Africa", "African Union",
@@ -35,12 +35,12 @@ indicators <- indicators %>%
 
 # b) Clean population data
 
-# For estimated population data:
+# For estimated population data
 # Set column names using row 12, then remove the first 12 rows (Excel metadata)
 colnames(pop_data_est) <- pop_data_est[12, ]
 pop_data_est <- pop_data_est[-c(1:12), ]
 
-# For projected population data:
+# For projected population data
 # Set column names using row 12, then remove the first 12 rows
 colnames(pop_data_proj) <- pop_data_proj[12, ]
 pop_data_proj <- pop_data_proj[-c(1:12), ]
@@ -54,14 +54,14 @@ id_cols <- c("Index", "Variant", "Region, subregion, country or area *", "Notes"
              "Location code", "ISO3 Alpha-code", "ISO2 Alpha-code", "SDMX code**", "Type",
              "Parent code", "Year")
 
-# Add '_est' suffix to estimate-specific columns
+# Add '_est' suffix to estimate specific columns
 colnames(pop_data_est) <- ifelse(
   colnames(pop_data_est) %in% id_cols,
   colnames(pop_data_est),
   paste0(colnames(pop_data_est), "_est")
 )
 
-# Add '_proj' suffix to projection-specific columns
+# Add '_proj' suffix to projection specific columns
 colnames(pop_data_proj) <- ifelse(
   colnames(pop_data_proj) %in% id_cols,
   colnames(pop_data_proj),
@@ -76,8 +76,8 @@ pop_data <- full_join(
   by = id_cols
 )
 
-# As specified: filter for coverage estimates from 2018 to 2022
-# Keep only country-level data for the years 2018–2022
+# As specified, filter for coverage estimates from 2018 to 2022
+# Keep only country level data for the years 2018 to 2022
 pop_data <- pop_data %>%
   filter(Type == "Country/Area", Year %in% 2018:2022)
 
@@ -98,7 +98,7 @@ status_data <- status_data %>%
     )
   )
 
-# 3. Merge datasets
+# Step 2, Merge datasets
 
 # a) Merge population data with status data using ISO3 country code
 merged <- full_join(
@@ -119,8 +119,8 @@ merged <- full_join(
 merged <- merged %>%
   rename(Country = `Region, subregion, country or area *`)
 
-# 4. Final filtering
-# As specified: Keep the most recent non-missing value per Country × Indicator within this range
+# Step 3, Final filtering
+# As specified, Keep the most recent non missing value per Country and Indicator within this range
 
 merged <- merged %>%
   filter(!is.na(Indicator)) %>%

@@ -1,8 +1,8 @@
 # Load environment and dependencies
 source("user_profile.R")
 
-# 1. Import datasets
-# a) ANC4 and SBA coverage data (2018–2022)
+# Step 1, Import datasets
+# a) ANC4 and SBA coverage data (2018 to 2022)
 indicators <- read_excel("data/01_rawdata/GLOBAL_DATAFLOW_2018-2022.xlsx")
 
 # b) Country classification (on-track / off-track)
@@ -16,10 +16,10 @@ pop_data_est <- read_excel("data/01_rawdata/WPP2022_GEN_F01_DEMOGRAPHIC_INDICATO
 pop_data_proj <- read_excel("data/01_rawdata/WPP2022_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT_REV1.xlsx", sheet = "Projections")
 
 
-# Execute data preparation script
+# Step 2, Execute data preparation script
 source("scripts/01_data_preparation.R")
 
-# Execute indicator calculation script
+# Step 3, Execute indicator calculation script
 source("scripts/02_indicator_calculation.R")
 
 # Render the final R Markdown report

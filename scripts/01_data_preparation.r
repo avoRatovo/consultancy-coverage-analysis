@@ -1,3 +1,14 @@
+# Script name 01_data_preparation.R
+# Purpose, this script cleans and harmonizes the input datasets used for the coverage analysis
+
+# It processes indicator data, population estimates and projections, and on track status information
+# Regional and non country entities are excluded to ensure national level analysis
+# Country and year variables are aligned across datasets for accurate merging
+# The most recent non missing values per country and indicator are selected
+# The final cleaned dataset is saved for use in reporting
+# This script is executed automatically by run_project.R
+
+
 # Step 1, Data cleaning
 
 # a) Clean indicators data

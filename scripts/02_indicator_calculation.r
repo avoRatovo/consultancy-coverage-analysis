@@ -1,3 +1,16 @@
+# Script name 02_indicator_calculation.R
+# Purpose, this script calculates the population weighted coverage for two maternal health indicators ANC4 and SBA
+
+# It uses the cleaned dataset produced by the script 01_data_preparation.R and isolates only the variables required for the analysis
+# It ensures that projected births from the year 2022 are used as consistent weights for all years
+# It filters out any rows with missing values in coverage observations group classification or projected births
+# It computes the weighted average coverage separately for On track and Off track groups using projected births as weights
+# The weighted coverage is calculated as the sum of coverage multiplied by weight divided by the total weight for each group and indicator
+# It outputs a single summary table stored in data/03_output_data/coverage_weighted_final.csv
+# This result is used directly in the final reporting step and supports comparison between country groups
+# This script is run automatically from run_project.R and assumes that the data preparation step in 01_data_preparation.R has been completed successfully
+
+
 # Step 1, Create a simplified dataset with only the required variables for weighted coverage analysis
 
 weighted_data <- merged %>%

@@ -1,3 +1,12 @@
+# Script name user_profile.R
+# This script prepares the R environment to ensure smooth execution of the analysis workflow
+# It defines the list of required packages and installs any that are missing
+# It loads all necessary libraries silently to avoid cluttering the console
+# It sets the locale and UTF-8 encoding to handle special characters consistently across systems
+# This script should be sourced before running any other component of the project
+# It is automatically called at the beginning of run_project.R
+
+
 # Step 1, Define and install required packages
 required_packages <- c("readxl", "dplyr", "rmarkdown", "ggplot2", "knitr", "scales")
 

@@ -13,8 +13,8 @@
 
 # a) Clean indicators data
 # Remove rows with missing geographic area
-# (When importing Excel files, extra NA rows are sometimes added at the end.
-# In this case, after reviewing the dataset, there is one NA row at the end that needs to be removed.)
+# When importing Excel files, extra NA rows are sometimes added at the end.
+# In this case, after reviewing the dataset, there is one NA row at the end that needs to be removed.
 indicators <- indicators[!is.na(indicators$`Geographic area`), ]
 
 
@@ -45,34 +45,44 @@ indicators <- indicators %>%
   filter(!`Geographic area` %in% non_country_entities & !is.na(`Geographic area`))
 
 # b) Clean population data
+# The population Excel files include metadata rows at the top (rows 1 to 12),
+# which contain NA, notes and formatting information that are not part of the real dataset.
+# The 12th row contains the actual column headers (variable names) we want to use.
 
 # For estimated population data
 # Set column names using row 12, then remove the first 12 rows (Excel metadata)
 colnames(pop_data_est) <- pop_data_est[12, ]
 pop_data_est <- pop_data_est[-c(1:12), ]
 
-# For projected population data
+# Do the same for projected population data
 # Set column names using row 12, then remove the first 12 rows
 colnames(pop_data_proj) <- pop_data_proj[12, ]
 pop_data_proj <- pop_data_proj[-c(1:12), ]
 
 
-# The two datasets (estimates and projections) have the same column names.
-# It's important to identify the source of each value after merging.
+# The two population datasets (Estimates and Projections) originally contain the same column names.
+# In order to merge them into a single dataset while retaining the source of each value, 
+# we append a suffix to the columns that differ between the two sources.
+# This allows for a clear distinction between estimated and projected figures post-merge.
 
-# Define identifier columns to keep unchanged
+
+# Define the list of identifier columns that should not be renamed.
+# These columns are consistent across both datasets and will serve as keys during the merge.
 id_cols <- c("Index", "Variant", "Region, subregion, country or area *", "Notes",
              "Location code", "ISO3 Alpha-code", "ISO2 Alpha-code", "SDMX code**", "Type",
              "Parent code", "Year")
 
-# Add '_est' suffix to estimate specific columns
+# Rename all non identifier columns in the 'Estimates' dataset by appending '_est'.
+# This ensures that the variables such as Total Population, Crude Birth Rate, etc.,
+# are labeled as originating from the Estimates sheet after the merge.
 colnames(pop_data_est) <- ifelse(
   colnames(pop_data_est) %in% id_cols,
   colnames(pop_data_est),
   paste0(colnames(pop_data_est), "_est")
 )
 
-# Add '_proj' suffix to projection specific columns
+# Do the same for the 'Projections' dataset, using the '_proj' suffix.
+# This ensures consistency and avoids column name conflicts when the datasets are joined.
 colnames(pop_data_proj) <- ifelse(
   colnames(pop_data_proj) %in% id_cols,
   colnames(pop_data_proj),

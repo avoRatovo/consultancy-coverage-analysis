@@ -1,0 +1,60 @@
+---
+title: "Population-Weighted Coverage Report for ANC4 and SBA (2018–2022)"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+
+# Load coverage_weighted_final from CSV file
+coverage_weighted_final <- read.csv("../data/03_output_data/coverage_weighted_final.csv")
+```
+
+## Coverage Visualization
+
+```{r coverage-plot, echo=FALSE}
+
+# Simplify indicator names
+coverage_weighted_final <- coverage_weighted_final %>%
+  mutate(
+    Indicator = case_when(
+      Indicator == "Antenatal care 4+ visits - percentage of women (aged 15-49 years) attended at least four times during pregnancy by any provider" ~ "ANC4",
+      Indicator == "Skilled birth attendant - percentage of deliveries attended by skilled health personnel" ~ "SBA",
+      TRUE ~ Indicator
+    ),
+    On_track_status = case_when(
+      On_track_status == "On-track" ~ "On-track countries",
+      On_track_status == "Off-track" ~ "Off-track countries",
+      TRUE ~ On_track_status
+    )
+  )
+
+# Plot with centered labels
+ggplot(coverage_weighted_final, aes(x = Indicator, y = weighted_coverage / 100, fill = On_track_status)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_text(
+    aes(
+      y = (weighted_coverage / 100) / 2,  # centrer à mi-hauteur de chaque barre
+      label = paste0(round(weighted_coverage, 1), "%")
+    ),
+    position = position_dodge(width = 0.8),
+    color = "white",
+    size = 3.5,
+    fontface = "bold"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Coverage Comparison: On-track vs Off-track Countries",
+    x = "Indicator",
+    y = "Weighted Coverage",
+    fill = "Group"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+
+```

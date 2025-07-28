@@ -47,3 +47,15 @@ non_country_entities <- c(
 
 indicators <- indicators %>%
   filter(!`Geographic area` %in% non_country_entities & !is.na(`Geographic area`))
+
+# b) Clean population data
+
+# For estimated population data:
+# Set column names using row 12, then remove the first 12 rows (Excel metadata)
+colnames(pop_data_est) <- pop_data_est[12, ]
+pop_data_est <- pop_data_est[-c(1:12), ]
+
+# For projected population data:
+# Set column names using row 12, then remove the first 12 rows
+colnames(pop_data_proj) <- pop_data_proj[12, ]
+pop_data_proj <- pop_data_proj[-c(1:12), ]

@@ -83,3 +83,17 @@ colnames(pop_data_proj) <- ifelse(
   paste0(colnames(pop_data_proj), "_proj")
 )
 
+
+# Merge the two datasets by the identifier columns
+pop_data <- full_join(
+  pop_data_est,
+  pop_data_proj,
+  by = id_cols
+)
+
+# Keep only country-level data for the years 2018–2022
+pop_data <- pop_data %>%
+  filter(Type == "Country/Area", Year %in% 2018:2022)
+
+
+

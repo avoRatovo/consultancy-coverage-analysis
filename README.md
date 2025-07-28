@@ -1,111 +1,125 @@
-# Test for Consultancy with the D&A Education Team
+# Population-Weighted Coverage Analysis – ANC4 & SBA
 
-This repository contains the tasks for the **UNICEF Data and Analytics technical evaluation** for education.
+## Context
 
-------------------------------------------------------------------------
+This project was developed as part of a technical evaluation exercise for a consultancy position with UNICEF's Division of Data, Analytics, Planning and Monitoring (DAPM). It focuses on calculating population-weighted coverage for two essential maternal health indicators:
 
-## 📋 General Instructions
+-   **ANC4**: Antenatal care visits (4 or more)
+-   **SBA**: Skilled birth attendance
 
--   Please **clone this repository** to your local computer. Once complete, **push your work to your own GitHub repository** and share the link.
-
--   To preserve your anonymity:
-
-    -   ❌ Do **not fork** this repository
-    -   ❌ Do **not include your name** anywhere in the submitted assessment
-
--   Please respect the **confidential nature of this test** and **do not share or discuss** its content with others.
-
--   Please add the **positions you applied for** in the final output and your readme. Please **do not include your name**.
-
--   The focus of this test is to assess:
-
-    -   ✅ How you **structure your workflow and code**
-    -   ✅ Your **proficiency in collaborative work environments**
-    -   ✅ Your **commitment to reproducible research practices**
-
--   The **final code and results** must be uploaded to your GitHub repository. Your code should:
-
-    -   📌 Be **well-documented**
-    -   ⚙️ Be **ready for automated execution**
-    -   📂 Follow best practices in **version control and coding standards**
-
--   You may use **R, Python, or Stata**.
-
--   **Estimated completion time**: 4 hours
-
--   ⏱️ **You have 48 hours** to complete the assessment and share back your GitHub repository link. Commits made **after 48 hours** will not be considered for evaluation.
+The analysis compares performance between countries **on track** and **off track** toward maternal health targets, using **projected births** as population weights.
 
 ------------------------------------------------------------------------
 
-## 🗂️ Exercise Overview
+## Positions Applied For
 
-### 1. Set up your GitHub repository and workflow
+This repository was submitted as part of the technical assessment for the following consultancy positions at UNICEF:
 
-Create a **well-structured repository** with the following:
-
--   📁 **Folder structure**: Reflect an end-to-end workflow with clear organization that supports reproducibility (e.g., `data`, `documentation`, `scripts`, etc.)
-
--   📝 **README file**:
-
-    -   Describe the **structure** of your repository
-    -   Explain the **purpose** of each folder and file
-    -   Include **instructions** on how to reproduce your analysis
-
--   🧩 In the **main directory**, include the following scripts:
-
-    -   `user_profile`: A script or configuration file that ensures your code can run on **any machine**
-    -   `run_project`: A script that executes your **workflow end-to-end**, producing the final output (**PDF, HTML, or DOCX report**)
+1.  Learning and Skills Data Analyst Consultant (Req: #581598)
+2.  Household Survey Data Analyst Consultant (Req: #581656)
+3.  Administrative Data Analyst (Req: #581696)
+4.  Microdata Harmonization Consultant (Req: #581699)
 
 ------------------------------------------------------------------------
 
-## 🩺 Task
+## Data Sources
 
-You are required to **calculate the population-weighted coverage** of two health services:
+The project uses three datasets:
 
--   **Antenatal care (ANC4)**: % of women (aged 15–49) with at least 4 antenatal care visits
--   **Skilled birth attendance (SBA)**: % of deliveries attended by skilled health personnel
+1.  **ANC4 and SBA Coverage Data (2018–2022)**\
+    File: `GLOBAL_DATAFLOW_2018-2022.xlsx`
 
-for countries categorized as **on-track** or **off-track** in achieving under-five mortality targets (as of 2022).
+2.  **Country Classification (On-track vs Off-track)**\
+    File: `On-track and off-track countries.xlsx`
 
-------------------------------------------------------------------------
-
-## 📊 Data Sources
-
--   **Retrieve the following indicators** from the UNICEF Global Data Repository [`LINK`](https://data.unicef.org/resources/data_explorer/unicef_f/?ag=UNICEF&df=GLOBAL_DATAFLOW&ver=1.0&dq=.MNCH_ANC4+MNCH_SAB.&startPeriod=2018&endPeriod=2022) at the country level for the years **2018–2022**:
-
-    -   **ANC4**: % of women (aged 15–49) with at least 4 antenatal care visits
-    -   **SBA**: % of deliveries attended by skilled health personnel
-
--   Use the following additional files:
-
-    -   📈 **Population Data**: UN World Population Prospects, 2022\
-        *File: `WPP2022_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT_REV1.xlsx` (located in `01_rawdata/`)*
-
-    -   **Under-five mortality classification**:
-
-        -   On-track if `Status.U5MR` is `"achieved"` or `"on-track"`
-        -   Off-track if `Status.U5MR` is `"acceleration needed"`\
-            *File: `On-track and off-track countries.xlsx`*
+3.  **Population Projections**\
+    File: `WPP2022_GEN_F01_DEMOGRAPHIC_INDICATORS_COMPACT_REV1.xlsx`\
+    Sheets used: `"Estimates"` and `"Projections"`
 
 ------------------------------------------------------------------------
 
-## 🧪 Steps to Follow
+# Structure of the Repository
 
-### 1. Data Preparation
+The repository is organized to support a reproducible and automated analysis workflow. At the root level, it includes five key components:
 
--   Clean and merge all datasets using **consistent country identifiers**
--   For ANC4 and SBA, **filter for coverage estimates from 2018 to 2022**
-    -   Use the **most recent estimate** within this range per country
+-   data/: Contains all datasets used throughout the workflow, organized into three subfolders:
 
-### 2. Calculate Population-Weighted Coverage
+    -   01_rawdata/: Original input files (e.g., demographic data, countries classification, indicator data).
 
--   For each group (**on-track** and **off-track**), calculate **population-weighted averages** for ANC4 and SBA
--   Use **projected births for 2022** as weights
+    -   02_cleaned_data/: Intermediate cleaned and harmonized datasets.
 
-### 3. Reporting
+    -   03_output_data/: Final analysis-ready datasets used for reporting.
 
--   Create a **PDF / HTML / DOCX report** including:
-    -   📉 A **visualization** comparing coverage for on-track vs. off-track countries
-    -   🧾 A short paragraph **interpreting the results**, highlighting any caveats or assumptions
+-   scripts/: Holds all R scripts for processing and analysis:
+
+    -   01_data_preparation.R: Cleans and merges input data.
+
+    -   02_indicator_calculation.R: Computes population-weighted coverage for ANC4 and SBA.
+
+    -   03_Reporting.Rmd: Generates the final report with visualizations and interpretation.
+
+-   run_project.R: Main execution script that runs the full workflow from data preparation to report generation.
+
+-   user_profile.R: Prepares the environment by installing and loading required packages and applying consistent settings.
+
+-   Reporting.html: Automatically generated HTML report summarizing the findings.
 
 ------------------------------------------------------------------------
+
+# How to Reproduce the Analysis
+
+To ensure full reproducibility, the entire analysis can be executed from a single script. The following steps describe how to set up and run the workflow.
+
+## Requirements
+
+-   R version 4.0.0 or higher
+
+-   Internet connection (required once, to install packages)
+
+-   Operating system compatible with UTF-8 encoding (Windows, macOS, or Linux)
+
+Note: No manual installation of R packages is required. All dependencies will be automatically handled by the project.
+
+## Steps to Run the Analysis
+
+### Option 1 – Run the complete workflow from the console
+
+1- Clone or download the repository to a local machine.
+
+2- Open R or RStudio, and set the working directory to the root of the project.
+
+3- Run the following command in the R console:
+
+``` r
+   source("run_project.R") 
+```
+
+### Option 2 – Run the script interactively
+
+1- Clone or download the repository to a local machine.
+
+2- Open R or RStudio, and set the working directory to the root of the project.
+
+3- Open the file run_project.R in RStudio.
+
+4- Execute the script line by line or run all lines at once (e.g., using Ctrl+Shift+Enter).
+
+This script will:
+
+-   Prepare the environment and install all required packages (user_profile.R)
+
+-   Run the full data preparation and indicator calculation pipeline
+
+-   Generate the final output report (Reporting.html)
+
+------------------------------------------------------------------------
+
+## Output
+
+After successful execution, the following file will be generated:
+
+-   Reporting.html – A standalone HTML report containing:
+
+    -   Comparative visualization (On-track vs Off-track countries)
+
+    -   Summary interpretation and methodological notes

@@ -59,3 +59,27 @@ pop_data_est <- pop_data_est[-c(1:12), ]
 # Set column names using row 12, then remove the first 12 rows
 colnames(pop_data_proj) <- pop_data_proj[12, ]
 pop_data_proj <- pop_data_proj[-c(1:12), ]
+
+
+# The two datasets (estimates and projections) have the same column names.
+# It's important to identify the source of each value after merging.
+
+# Define identifier columns to keep unchanged
+id_cols <- c("Index", "Variant", "Region, subregion, country or area *", "Notes",
+             "Location code", "ISO3 Alpha-code", "ISO2 Alpha-code", "SDMX code**", "Type",
+             "Parent code", "Year")
+
+# Add '_est' suffix to estimate-specific columns
+colnames(pop_data_est) <- ifelse(
+  colnames(pop_data_est) %in% id_cols,
+  colnames(pop_data_est),
+  paste0(colnames(pop_data_est), "_est")
+)
+
+# Add '_proj' suffix to projection-specific columns
+colnames(pop_data_proj) <- ifelse(
+  colnames(pop_data_proj) %in% id_cols,
+  colnames(pop_data_proj),
+  paste0(colnames(pop_data_proj), "_proj")
+)
+

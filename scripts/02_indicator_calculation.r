@@ -16,6 +16,8 @@
 weighted_data <- merged %>%
   # Filter to retain only the two target indicators, ANC4 and SBA
   # These indicators are required to compute population weighted coverage between 2018 and 2022
+  # Although the current dataset contains only ANC4 and SBA indicators
+  # this precautionary step ensures robustness in case future updates
   filter(Indicator %in% c(
     "Antenatal care 4+ visits - percentage of women (aged 15-49 years) attended at least four times during pregnancy by any provider",
     "Skilled birth attendant - percentage of deliveries attended by skilled health personnel"
@@ -43,7 +45,7 @@ pop_2022_proj <- pop_data_proj %>%
   filter(Year == 2022, Type == "Country/Area") %>%
   select(`ISO3 Alpha-code`, `Births (thousands)_proj`)  # More reliable population weight
 
-# Step 3, Merge 2022 projected births with the simplified indicators dataset
+# Step 3, Merge 2022 projected births with the simplified weighted_data dataset
 weighted_data <- weighted_data %>%
   left_join(pop_2022_proj, by = "ISO3 Alpha-code") %>%
   rename(weight_2022 = `Births (thousands)_proj.y`)  # Rename to clarify it's the 2022 projection
@@ -66,7 +68,7 @@ weighted_data <- weighted_data %>%
 # Non missing group classification (On_track_status)
 # Each row in this dataset represents a country indicator year observation.
 # Only countries with all three fields filled are included in the weighted average.
-
+# Countries like Bermuda, Kosovo, and the United States are removed during this step due to missing data.
 weighted_data <- weighted_data %>%
   filter(!is.na(OBS_VALUE), !is.na(weight_2022), !is.na(On_track_status))
 

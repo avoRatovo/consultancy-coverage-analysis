@@ -112,4 +112,20 @@ status_data <- status_data %>%
     )
   )
 
+# 3. Merge datasets
+
+# a) Merge population data with status data using ISO3 country code
+merged_data_pop_status <- full_join(
+  pop_data,
+  status_data,
+  by = c("ISO3 Alpha-code" = "ISO3Code")
+)
+
+# b) Merge the result with indicators data using country name and year
+merged <- full_join(
+  merged_data_pop_status,
+  indicators,
+  by = c("Region, subregion, country or area *" = "Geographic area", "Year" = "TIME_PERIOD")
+)
+
 

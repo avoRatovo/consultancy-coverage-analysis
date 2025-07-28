@@ -91,6 +91,7 @@ pop_data <- full_join(
   by = id_cols
 )
 
+# As specified: filter for coverage estimates from 2018 to 2022
 # Keep only country-level data for the years 2018–2022
 pop_data <- pop_data %>%
   filter(Type == "Country/Area", Year %in% 2018:2022)
@@ -115,7 +116,7 @@ status_data <- status_data %>%
 # 3. Merge datasets
 
 # a) Merge population data with status data using ISO3 country code
-merged_data_pop_status <- full_join(
+merged <- full_join(
   pop_data,
   status_data,
   by = c("ISO3 Alpha-code" = "ISO3Code")
@@ -123,9 +124,21 @@ merged_data_pop_status <- full_join(
 
 # b) Merge the result with indicators data using country name and year
 merged <- full_join(
-  merged_data_pop_status,
+  merged,
   indicators,
   by = c("Region, subregion, country or area *" = "Geographic area", "Year" = "TIME_PERIOD")
 )
 
 
+# c) Rename the country column for clarity
+merged <- merged %>%
+  rename(Country = `Region, subregion, country or area *`)
+
+# 4. Final filtering
+# As specified: Keep the most recent non-missing value per Country × Indicator within this range
+
+merged <- merged %>%
+  filter(!is.na(Indicator)) %>%
+  group_by(Country, Indicator) %>%
+  filter(Year == max(Year, na.rm = TRUE)) %>%
+  ungroup()
